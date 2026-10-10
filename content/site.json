@@ -1,0 +1,20 @@
+{
+  "name": "Nagi Story Music",
+  "catchcopy": "物語を、歌と映像で。",
+  "sections": ["top", "works", "profile", "links"],
+  "mascot": {
+    "name": "B.A.I.R.T（ベイート）",
+    "images": ["materials/mascot/bairt-front.png", "materials/mascot/bairt-side.png", "materials/mascot/bairt-back.png"]
+  },
+  "links": {
+    "youtube": "https://www.youtube.com/@Nagi-Story-Music",
+    "tiktok": "https://www.tiktok.com/@nagistorymusic",
+    "note": "https://note.com/nagi_storymusic",
+    "x": "https://x.com/Nagi_storymusic"
+  },
+  "contact": {
+    "type": "form",
+    "service": "Web3Forms などのフォーム送信サービス（ステップ6で本人が登録）",
+    "fields": ["お名前", "メールアドレス", "依頼の種類（MV制作／作曲／その他）", "内容"]
+  }
+}

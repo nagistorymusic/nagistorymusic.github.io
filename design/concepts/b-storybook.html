@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>案B 物語の本 — Nagi Story Music</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --slate: #7f8f9b; --slate-d: #5d6b75; --paper: #ece5d3; --ink: #23201f; --red: #d4513a; --line: rgba(35,32,31,.25);
+    --mincho: 'Shippori Mincho B1', serif; --en: 'Bodoni Moda', serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: var(--slate); color: var(--ink); }
+  body { font-family: var(--mincho); font-size: 16px; line-height: 2; overflow-x: hidden; }
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+  /* 紙のざらつき（版画の質感） */
+  body::before { content: ''; position: fixed; inset: 0; z-index: 50; pointer-events: none; opacity: .18; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  .vt { writing-mode: vertical-rl; text-orientation: mixed; }
+
+  /* ---------- 表紙 ---------- */
+  .cover { min-height: 100svh; display: grid; grid-template-columns: minmax(220px, 34%) 1fr; }
+  .cover .spine { background: var(--paper); padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px); display: flex; justify-content: space-between; gap: 20px; }
+  .cover h1 { font-weight: 800; font-size: clamp(34px, 4.6vw, 64px); letter-spacing: .18em; line-height: 1.5; }
+  .cover h1 .r { color: var(--red); }
+  .cover .side { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; }
+  .cover .brand { font-family: var(--en); font-style: italic; font-size: 15px; letter-spacing: .1em; }
+  .cover .brand b { display: block; font-style: normal; font-size: 11px; letter-spacing: .35em; font-weight: 500; }
+  .cover .toc { font-size: 13px; line-height: 2.2; list-style: none; padding: 0; text-align: right; }
+  .cover .toc a { text-decoration: none; border-bottom: 1px solid var(--line); }
+  .cover .stage { position: relative; padding: clamp(24px, 5vw, 72px); display: grid; place-items: center; }
+  /* 版ずれのように、少しずれた墨の枠 */
+  .frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: var(--ink); box-shadow: 14px 14px 0 -2px var(--slate), 14px 14px 0 0 var(--ink); }
+  .frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .stage .cap { position: absolute; right: clamp(24px, 5vw, 72px); bottom: clamp(10px, 2vw, 28px); font-family: var(--en); font-style: italic; color: var(--paper); font-size: 14px; letter-spacing: .1em; }
+
+  /* 05 マスクリビール：幕が開くように */
+  [data-mask] { clip-path: inset(0 0 100% 0); transition: clip-path 1.4s cubic-bezier(.7,0,.2,1); }
+  [data-mask].is-in { clip-path: inset(0 0 0 0); }
+  [data-mask="side"] { clip-path: inset(0 100% 0 0); }
+  [data-mask="side"].is-in { clip-path: inset(0 0 0 0); }
+
+  /* 14 テキストフィル：読み進めるほど墨が乗る */
+  .fill { --p: 0; color: transparent; background: linear-gradient(90deg, var(--ink) calc(var(--p) * 100%), rgba(35,32,31,.22) calc(var(--p) * 100% + .5%));
+          -webkit-background-clip: text; background-clip: text; }
+  .vt.fill { background: linear-gradient(180deg, var(--ink) calc(var(--p) * 100%), rgba(35,32,31,.22) calc(var(--p) * 100% + .5%));
+             -webkit-background-clip: text; background-clip: text; }
+  .on-paper .fill { background-image: linear-gradient(90deg, var(--ink) calc(var(--p) * 100%), rgba(35,32,31,.18) calc(var(--p) * 100% + .5%)); }
+
+  /* ---------- 章 ---------- */
+  .chapters { padding: clamp(80px, 12vw, 160px) clamp(16px, 5vw, 72px); }
+  .head { display: flex; align-items: baseline; gap: 24px; margin-bottom: clamp(56px, 9vw, 110px); color: var(--paper); }
+  .head h2 { font-family: var(--en); font-weight: 400; font-style: italic; font-size: clamp(44px, 7vw, 96px); line-height: 1; }
+  .head span { font-size: 13px; letter-spacing: .3em; }
+  .chapter { display: grid; grid-template-columns: auto 1fr 1fr; gap: clamp(16px, 3.5vw, 56px); align-items: start; padding: clamp(40px, 6vw, 72px) 0; border-top: 1px solid rgba(236,229,211,.35); }
+  .chapter .num { color: var(--red); font-weight: 800; font-size: clamp(18px, 2vw, 24px); letter-spacing: .3em; }
+  .chapter .pic { position: relative; aspect-ratio: 16 / 9; background: var(--ink); cursor: pointer; overflow: hidden; }
+  .chapter .pic img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.85) contrast(1.05); transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+  .chapter .pic:hover img { transform: scale(1.04); }
+  .chapter .pic iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .chapter .pic .play { position: absolute; left: 0; bottom: 0; background: var(--paper); color: var(--ink); font-size: 12px; letter-spacing: .3em; padding: 6px 14px; }
+  .chapter .pic.is-playing .play { display: none; }
+  .chapter .text h3 { font-family: var(--en); font-style: italic; font-weight: 400; font-size: clamp(22px, 2.4vw, 32px); color: var(--paper); line-height: 1.2; }
+  .chapter .text h3.jp { font-family: var(--mincho); font-style: normal; font-weight: 700; letter-spacing: .14em; }
+  .chapter .text p { margin-top: 18px; font-weight: 700; font-size: clamp(20px, 2.3vw, 30px); line-height: 1.75; letter-spacing: .08em; white-space: pre-line; }
+  .chapter:nth-child(even) .pic { order: 3; } .chapter:nth-child(even) .text { order: 2; }
+  .after { margin-top: 64px; text-align: right; color: var(--paper); }
+  .after a { font-family: var(--en); font-style: italic; font-size: 20px; text-decoration: none; border-bottom: 1px solid var(--red); }
+
+  /* ---------- あとがき ---------- */
+  .on-paper { background: var(--paper); padding: clamp(80px, 12vw, 160px) clamp(16px, 5vw, 72px); }
+  .afterword { display: grid; grid-template-columns: auto 1fr; gap: clamp(28px, 6vw, 96px); max-width: 1180px; }
+  .afterword h2 { font-weight: 800; font-size: clamp(30px, 3.6vw, 46px); letter-spacing: .3em; }
+  .afterword .ja { font-weight: 700; font-size: clamp(18px, 1.9vw, 24px); line-height: 2.2; letter-spacing: .06em; }
+  .afterword .en { margin-top: 32px; font-family: var(--en); font-style: italic; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.75; color: #5a5450; max-width: 60ch; }
+
+  /* ---------- 奥付 ---------- */
+  .colophon { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); max-width: 1180px; margin-top: clamp(80px, 12vw, 140px); padding-top: 48px; border-top: 2px solid var(--ink); }
+  .colophon h2 { font-weight: 800; font-size: 22px; letter-spacing: .5em; margin-bottom: 28px; }
+  .colophon dl { display: grid; grid-template-columns: 7em 1fr; row-gap: 12px; font-size: 15px; }
+  .colophon dt { letter-spacing: .3em; color: #6b645f; }
+  .colophon > div { min-width: 0; }
+  .colophon dd { margin: 0; border-bottom: 1px dotted var(--line); overflow-wrap: anywhere; }
+  .colophon dd a { text-decoration: none; } .colophon dd a:hover { color: var(--red); }
+  form { display: grid; gap: 18px; }
+  label { display: grid; grid-template-columns: 7em 1fr; align-items: baseline; font-size: 14px; letter-spacing: .2em; color: #6b645f; }
+  input, select, textarea { font: inherit; font-size: 15px; color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid var(--ink); padding: 6px 2px; outline: none; letter-spacing: .04em; }
+  textarea { min-height: 96px; resize: vertical; }
+  input:focus, textarea:focus, select:focus { border-bottom-color: var(--red); }
+  button { justify-self: end; font: inherit; font-weight: 700; letter-spacing: .4em; background: var(--ink); color: var(--paper); border: 0; padding: 10px 34px; cursor: pointer; }
+  button:hover { background: var(--red); }
+  footer { background: var(--paper); text-align: center; font-family: var(--en); font-style: italic; padding: 0 0 56px; font-size: 13px; }
+
+  .bairt { position: fixed; left: 0; top: 0; z-index: 30; pointer-events: none; }
+
+  @media (max-width: 820px) {
+    .cover { grid-template-columns: 1fr; }
+    .cover .spine { min-height: 62svh; }
+    .chapter { grid-template-columns: 1fr; }
+    .chapter .num { writing-mode: horizontal-tb; }
+    .chapter:nth-child(even) .pic, .chapter:nth-child(even) .text { order: 0; }
+    .afterword, .colophon { grid-template-columns: 1fr; }
+    .afterword h2 { writing-mode: horizontal-tb; }
+  }
+  @media (prefers-reduced-motion: reduce) { [data-mask] { clip-path: none; transition: none; } }
+</style>
+</head>
+<body>
+<header class="cover">
+  <div class="spine">
+    <h1 class="vt" data-mask data-reveal>物語を、<br><span class="r">歌</span>と<span class="r">映像</span>で。</h1>
+    <div class="side">
+      <p class="brand"><b>NAGI STORY MUSIC</b>a book of songs &amp; films</p>
+      <ul class="toc">
+        <li><a href="#works">目次 — 六つの物語</a></li>
+        <li><a href="#about">あとがき</a></li>
+        <li><a href="#contact">奥付・お問い合わせ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="frame" data-mask="side" data-reveal>
+      <video autoplay muted loop playsinline poster="../../assets/showreel/showreel-poster-1080.jpg">
+        <source src="../../assets/showreel/showreel-1080.webm" type="video/webm">
+        <source src="../../assets/showreel/showreel-1080.mp4" type="video/mp4">
+      </video>
+    </div>
+    <p class="cap">— prologue</p>
+  </div>
+</header>
+
+<main class="chapters" id="works">
+  <div class="head"><h2>Contents</h2><span>六つの物語</span></div>
+  <div id="list"></div>
+  <p class="after"><a href="https://www.youtube.com/@Nagi-Story-Music/videos" target="_blank" rel="noopener">続きの物語は YouTube で →</a></p>
+</main>
+
+<section class="on-paper" id="about">
+  <div class="afterword">
+    <h2 class="vt">あとがき</h2>
+    <div>
+      <p class="ja fill" id="pja"></p>
+      <p class="en" id="pen"></p>
+    </div>
+  </div>
+  <div class="colophon" id="contact">
+    <div>
+      <h2>奥付</h2>
+      <dl id="links"></dl>
+    </div>
+    <div>
+      <h2>お便り</h2>
+      <form onsubmit="event.preventDefault(); this.querySelector('button').textContent='届きました';">
+        <label>お名前<input required></label>
+        <label>メール<input type="email" required></label>
+        <label>ご依頼<select><option>MV制作</option><option>作曲</option><option>その他</option></select></label>
+        <label>内容<textarea required></textarea></label>
+        <button>送る</button>
+      </form>
+    </div>
+  </div>
+</section>
+<footer>— fin. &nbsp;© Nagi Story Music</footer>
+
+<script src="shared.js"></script>
+<script>
+  const { works, links, profile } = NSM;
+  const kan = ['一', '二', '三', '四', '五', '六'];
+  document.getElementById('list').innerHTML = works.map((w, i) => `
+    <article class="chapter">
+      <p class="num vt">第${kan[i]}話</p>
+      <div class="pic" data-avoid data-id="${w.id}" data-mask data-reveal>
+        <img src="${NSM.thumb(w.id)}" alt="${w.title}" loading="lazy"><span class="play">再生</span>
+      </div>
+      <div class="text">
+        <h3 class="${/[^\x00-\x7F]/.test(w.title) ? 'jp' : ''}">${w.title}</h3>
+        <p class="fill">${w.line}</p>
+      </div>
+    </article>`).join('');
+  document.querySelectorAll('.pic').forEach((p) => NSM.facade(p, p.dataset.id));
+  document.getElementById('pja').textContent = profile.ja;
+  document.getElementById('pen').textContent = profile.en;
+  document.getElementById('links').innerHTML = [['著者', 'Nagi Story Music', '']].concat(links.map(([n, u]) => [n, u.replace(/^https:\/\/(www\.)?/, ''), u]))
+    .map(([k, v, u]) => `<dt>${k}</dt><dd>${u ? `<a href="${u}" target="_blank" rel="noopener">${v}</a>` : v}</dd>`).join('');
+  document.querySelectorAll('.fill').forEach(NSM.fill);
+  NSM.reveal();
+  NSM.mascot({ src: '../../assets/mascot/bairt-front.png', side: '../../assets/mascot/bairt-side.png', mode: 'gaze', size: 54 });
+</script>
+</body>
+</html>

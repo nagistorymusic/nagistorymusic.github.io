@@ -23,28 +23,33 @@ New-Item -ItemType Directory -Force $outDir | Out-Null
 $clips = @(Import-Csv -Encoding UTF8 (Join-Path $PSScriptRoot 'clips.csv'))
 if ($clips.Count -lt 2) { throw 'clips.csv に2本以上書いてください' }
 
-$norm = 'scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=30,setsar=1,format=yuv420p'
+$norm = 'scale=2560:1440:force_original_aspect_ratio=increase,crop=2560:1440,fps=30,setsar=1,format=yuv420p'
 
-# 入力: 各場面 + ループのつなぎ目用に先頭の場面をもう一度（フェード分だけ）
-$inputs = @()
-$filter = ''
+# 各場面を先に1本ずつ切り出す（4K素材を一度に開くとメモリが足りなくなるため）
+$tmp = Join-Path $env:TEMP 'nagi-showreel-parts'
+New-Item -ItemType Directory -Force $tmp | Out-Null
+$parts = @()
 $lens = @()
-for ($i = 0; $i -lt $clips.Count; $i++) {
-  $c = $clips[$i]
+for ($i = 0; $i -le $clips.Count; $i++) {
+  # 最後の1本は、ループのつなぎ目用に先頭の場面をもう一度（フェード分だけ）
+  $c = if ($i -lt $clips.Count) { $clips[$i] } else { $clips[0] }
   $path = Join-Path $clipDir $c.file
   if (-not (Test-Path -LiteralPath $path)) { throw "見つかりません: $($c.file)" }
-  $len = [double]$c.length
-  $lens += $len
-  $inputs += @('-ss', $c.start, '-t', $len, '-i', $path)
+  $len = if ($i -lt $clips.Count) { [double]$c.length } else { $Fade + 0.1 }
+  if ($i -lt $clips.Count) { $lens += $len }
   $adj = if ($c.adjust) { ",$($c.adjust)" } else { '' }
-  $filter += "[${i}:v]$norm$adj,setpts=PTS-STARTPTS[v$i];"
+  $part = Join-Path $tmp "part$i.mp4"
+  & ffmpeg -v error -y -ss $c.start -t $len -i $path -an -vf "$norm$adj" -c:v libx264 -preset veryfast -crf 8 $part
+  if ($LASTEXITCODE -ne 0) { throw "切り出しに失敗しました: $($c.file)" }
+  $parts += $part
+}
+$inputs = @()
+$filter = ''
+for ($i = 0; $i -lt $parts.Count; $i++) {
+  $inputs += @('-i', $parts[$i])
+  $filter += "[${i}:v]setpts=PTS-STARTPTS[v$i];"
 }
 $w = $clips.Count
-$first = $clips[0]
-$inputs += @('-ss', $first.start, '-t', ($Fade + 0.1), '-i', (Join-Path $clipDir $first.file))
-$adj0 = if ($first.adjust) { ",$($first.adjust)" } else { '' }
-$filter += "[${w}:v]$norm$adj0,setpts=PTS-STARTPTS[v$w];"
-
 # クロスフェードでつなぎ、最後は先頭の場面へフェードして戻す
 $prev = 'v0'
 $acc = $lens[0]
@@ -74,8 +79,9 @@ $master = Join-Path $env:TEMP 'nagi-showreel-master.mp4'
 if ($LASTEXITCODE -ne 0) { throw '中間ファイルの書き出しに失敗しました' }
 
 $sizes = @(
-  @{ name = '1080'; scale = '1920:1080'; crf264 = 29; crf9 = 41 },
-  @{ name = '720';  scale = '1280:720';  crf264 = 30; crf9 = 43 }
+  @{ name = '1440'; scale = '2560:1440'; crf264 = 24; crf9 = 34 },
+  @{ name = '1080'; scale = '1920:1080'; crf264 = 24; crf9 = 34 },
+  @{ name = '720';  scale = '1280:720';  crf264 = 26; crf9 = 37 }
 )
 foreach ($s in $sizes) {
   $vf = "scale=$($s.scale):flags=lanczos,format=yuv420p"
@@ -86,8 +92,9 @@ foreach ($s in $sizes) {
 }
 
 # 待機画像（動画の最初のコマ）
-& ffmpeg -v error -y -i $master -frames:v 1 -vf 'scale=1920:1080' -q:v 4 (Join-Path $outDir 'showreel-poster-1080.jpg')
+& ffmpeg -v error -y -i $master -frames:v 1 -vf 'scale=1920:1080:flags=lanczos' -q:v 3 (Join-Path $outDir 'showreel-poster-1080.jpg')
 & ffmpeg -v error -y -i $master -frames:v 1 -vf 'scale=1280:720'  -q:v 4 (Join-Path $outDir 'showreel-poster-720.jpg')
 Remove-Item $master
+Remove-Item -Recurse $tmp
 
 Get-ChildItem $outDir | ForEach-Object { '{0,-28} {1,6:N1} MB' -f $_.Name, ($_.Length / 1MB) }
