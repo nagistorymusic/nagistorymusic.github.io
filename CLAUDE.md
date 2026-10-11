@@ -5,12 +5,12 @@
 
 ## 今の状況と決定事項（2026-10-11 時点・引き継ぎ用）
 
-ステップ1〜7は完了。**残りはステップ8（公開）**。作業は Windows で進めたが、今後は Mac で管理する予定。
+ステップ1〜8はすべて完了（2026-10-11 公開）。管理は Windows から Mac に移した。
 
-- **リポジトリ**：`nagistorymusic/nagistorymusic.github.io`（非公開・main）。LP 専用。
+- **リポジトリ**：`nagistorymusic/nagistorymusic.github.io`（public・main）。LP 専用。
   GitHub は **nagistorymusic** アカウントで作業する。push の前に `gh auth status` で nagistorymusic が使われているか確認する。
 - **公開先**：GitHub Pages で `https://nagistorymusic.github.io`（無料）。独自ドメインは見送り（必要になったら追加）。
-  公開時にリポジトリを public にする。デザインの試作3案は `design-concepts` ブランチに保管し、main には入れない。
+  2026-10-11 に public にして公開した。デザインの試作3案は `design-concepts` ブランチに保管し、main には入れない。
 - **デザイン**：案A「上映プログラム（映画館）」。墨色 `#121111`・生成り `#ebe4d3`・朱 `#d9533b`。
   フォントは Google Fonts（Cormorant Garamond / Shippori Mincho / Zen Kaku Gothic New）。
 - **演出（7つ）**：04 テキストリビール、06 ブラーイン、10 パララックス（透かしの NSM マーク）、15 背景色トランジション（7%）、23 隠れるヘッダー、
@@ -19,7 +19,7 @@
 - **作品**：6本・ほぼ新しい順。画像クリックでサイト内再生、「Watch on YouTube ↗」で YouTube へ。表記は基本「Official MV」、Halloween Night は「AI Film」。
   キーセンテンスは1文字ずつ演出するため日本語の禁則が効かない → **改行位置は `\n` で手で決める**。
 - **英語**：見出し・ナビは英語、内容は日本語、プロフィールだけ日英併記。英語版の切り替えは付けない（海外の依頼が増えたら検討）。
-- **お問い合わせ**：Web3Forms（Access Key は `content/site.json`、公開してよい値）。テスト送信成功済み。
+- **お問い合わせ**：Web3Forms（Access Key は `content/site.json`、公開してよい値）。公開後のテスト送信も成功済み。送信元ドメインの制限は有料（Pro）のため掛けていない。いたずらが増えたら Access Key を作り直して差し替える。
 - **一番上へ戻る**：ロゴ／ページ末尾の「Back to top」／スマホではベイートをタップ。
 
 ### ファイルの場所

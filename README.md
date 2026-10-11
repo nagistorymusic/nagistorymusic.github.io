@@ -2,7 +2,7 @@
 
 物語・音楽・映像を組み合わせて作品を制作するクリエイター Nagi Story Music のポートフォリオサイト。
 
-公開先（予定）: https://nagistorymusic.github.io
+公開先: https://nagistorymusic.github.io
 
 ## 手元で見る
 

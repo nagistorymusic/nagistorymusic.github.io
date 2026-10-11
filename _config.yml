@@ -1,0 +1,7 @@
+# GitHub Pages（Jekyll）の設定
+# 作業用のメモや道具はサイトとして公開しない（リポジトリでは見られる）
+exclude:
+  - CLAUDE.md
+  - README.md
+  - docs/
+  - tools/

@@ -11,7 +11,7 @@ Windows で進めてきた LP の管理を Mac に移すための手順書。
 - GitHub は **nagistorymusic** アカウントで作業する。このリポジトリ（`nagistorymusic/nagistorymusic.github.io`）はこちら
   - push の前に `gh auth status` で nagistorymusic が使われているか確認する
 - アカウントの作成・パスワードの入力・ログインの許可は **本人がやる**（Claude は代わりにやらない）
-- リポジトリは今は **非公開**。公開（ステップ8）は本人の OK が出てから
+- リポジトリは **public**（2026-10-11 に公開済み）。誰でも中身を見られるので、個人情報や非公開の情報を入れない
 
 ## 1. 道具を入れる
 
@@ -108,6 +108,4 @@ push は **本人に頼まれたときだけ** 行う。
 
 ## 残っている作業
 
-- **ステップ8：公開** — 本人の OK を取ってから、リポジトリを public にし、GitHub Pages（main ブランチ / ルート）を有効にする。
-  公開後、https://nagistorymusic.github.io で表示・フォーム送信・共有画像（X や LINE に URL を貼ったときの見え方）を確認する。
 - 素材を Google ドライブへ移す（本人の準備ができたら）
