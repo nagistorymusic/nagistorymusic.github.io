@@ -14,7 +14,8 @@
   },
   "contact": {
     "type": "form",
-    "service": "Web3Forms などのフォーム送信サービス（ステップ6で本人が登録）",
+    "service": "Web3Forms",
+    "accessKey": "63e37a2a-b743-4140-91e3-05309424adce",
     "fields": ["お名前", "メールアドレス", "依頼の種類（MV制作／作曲／その他）", "内容"]
   }
 }

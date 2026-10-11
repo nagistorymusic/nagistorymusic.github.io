@@ -20,6 +20,11 @@ window.NSM = (() => {
   };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const thumb = (id) => `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+  // サイト内に置いた軽いサムネイル（assets/works/<id>-640.webp / -1280.webp）
+  const localThumb = (id, base = '') => ({
+    src: `${base}assets/works/${id}-1280.webp`,
+    srcset: `${base}assets/works/${id}-640.webp 640w, ${base}assets/works/${id}-1280.webp 1280w`,
+  });
 
   // クリックした時だけ YouTube を読み込む（ふだんはサムネイルだけ）
   function facade(el, id) {
@@ -160,5 +165,5 @@ window.NSM = (() => {
     addEventListener('scroll', on, { passive: true }); on();
   }
 
-  return { works, links, profile, reduced, thumb, facade, split, reveal, mascot, marquee, fill };
+  return { works, links, profile, reduced, thumb, localThumb, facade, split, reveal, mascot, marquee, fill };
 })();
