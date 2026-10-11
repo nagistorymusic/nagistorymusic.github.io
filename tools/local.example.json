@@ -1,0 +1,6 @@
+{
+  "_説明": "このファイルを local.json という名前でコピーして、素材フォルダ（materials）の場所を書く。local.json は Git に入らない。",
+  "_Mac の例": "~/Library/CloudStorage/GoogleDrive-xxxx@gmail.com/マイドライブ/Nagi Story Music/materials",
+  "_Windows の例": "G:/マイドライブ/Nagi Story Music/materials",
+  "materials": "materials"
+}

@@ -3,6 +3,52 @@
 音楽・MV制作者「Nagi Story Music」のポートフォリオサイト（1ページのLP）。
 **内容（構成・文章・配色など）は本人と後で詰める。勝手に決めず、案を出して確認をとること。**
 
+## 今の状況と決定事項（2026-10-11 時点・引き継ぎ用）
+
+ステップ1〜7は完了。**残りはステップ8（公開）**。作業は Windows で進めたが、今後は Mac で管理する予定。
+
+- **リポジトリ**：`nagistorymusic/nagistorymusic.github.io`（非公開・main）。LP 専用。
+  GitHub は **nagistorymusic** アカウントで作業する。push の前に `gh auth status` で nagistorymusic が使われているか確認する。
+- **公開先**：GitHub Pages で `https://nagistorymusic.github.io`（無料）。独自ドメインは見送り（必要になったら追加）。
+  公開時にリポジトリを public にする。デザインの試作3案は `design-concepts` ブランチに保管し、main には入れない。
+- **デザイン**：案A「上映プログラム（映画館）」。墨色 `#121111`・生成り `#ebe4d3`・朱 `#d9533b`。
+  フォントは Google Fonts（Cormorant Garamond / Shippori Mincho / Zen Kaku Gothic New）。
+- **演出（7つ）**：04 テキストリビール、06 ブラーイン、10 パララックス（透かしの NSM マーク）、15 背景色トランジション（7%）、23 隠れるヘッダー、
+  ロゴのオープニング（NSM マーク → グリッチ → ワードマーク → 左上へ。1訪問1回、`?intro=1` で再生）、ベイート（マスコット B.A.I.R.T）がカーソルにあとからついてくる。
+  試して外したもの：05 マスクリビール、11 スクロールズーム（変化を感じにくい／重い）。
+- **作品**：6本・ほぼ新しい順。画像クリックでサイト内再生、「Watch on YouTube ↗」で YouTube へ。表記は基本「Official MV」、Halloween Night は「AI Film」。
+  キーセンテンスは1文字ずつ演出するため日本語の禁則が効かない → **改行位置は `\n` で手で決める**。
+- **英語**：見出し・ナビは英語、内容は日本語、プロフィールだけ日英併記。英語版の切り替えは付けない（海外の依頼が増えたら検討）。
+- **お問い合わせ**：Web3Forms（Access Key は `content/site.json`、公開してよい値）。テスト送信成功済み。
+- **一番上へ戻る**：ロゴ／ページ末尾の「Back to top」／スマホではベイートをタップ。
+
+### ファイルの場所
+
+| 場所 | 中身 |
+|---|---|
+| `index.html` | 本番ページ（案A） |
+| `content/works.json` `profile.json` `site.json` | 表示内容（作品・プロフィール・リンク）。**ページはここを読んで表示する** |
+| `assets/` | 動画・画像・ロゴ・アイコン・`js/site.js` |
+| `tools/update_works.py` | 作品一覧を整え、サムネイルを取得・変換 |
+| `tools/showreel/build.py` ＋ `clips.csv` | ショーリールの作り直し |
+| `tools/dev-server.py` | 確認用サーバー（動画のシーク対応）→ `http://localhost:8765/` |
+| `tools/local.json` | パソコンごとの設定（素材フォルダの場所）。Git に入れない。`local.example.json` を参考に作る |
+
+### 更新のしかた
+
+- **作品を入れ替える**：`content/works.json` に `{ "url": "YouTube の URL", "line": "キーセンテンス" }` を書く → `python3 tools/update_works.py`（タイトルとサムネイルを自動取得）→ 確認 → push
+- **ショーリールを作り直す**：`tools/showreel/clips.csv` を編集 → `python3 tools/showreel/build.py --preview` で確認 → OK なら `python3 tools/showreel/build.py`
+- **素材（materials）**：nagistorymusic の Google ドライブに置く予定（未移行）。場所は `tools/local.json` に書く。ショーリールを作るときは「オフラインで使用可能」にしておく
+
+### Mac での準備
+
+詳しい手順と確認方法は **`docs/mac-setup.md`**。概要：
+
+1. `brew install ffmpeg python gh` ／ `pip3 install Pillow`
+2. `gh auth login`（**nagistorymusic** でログイン）→ `gh repo clone nagistorymusic/nagistorymusic.github.io`
+3. 素材を使うなら Google ドライブ パソコン版を入れ、`tools/local.json` に materials の場所を書く
+4. `python3 tools/dev-server.py` → `http://localhost:8765/`
+
 ## 進め方（この順番を守る）
 
 各ステップは「確認用を作る → 本人がOK → 次へ」。OKが出るまで次のステップに進まない。

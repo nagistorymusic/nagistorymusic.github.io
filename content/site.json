@@ -1,19 +1,17 @@
 {
   "name": "Nagi Story Music",
   "catchcopy": "物語を、歌と映像で。",
-  "sections": ["top", "works", "profile", "links"],
+  "links": [
+    { "label": "YouTube", "url": "https://www.youtube.com/@Nagi-Story-Music" },
+    { "label": "TikTok", "url": "https://www.tiktok.com/@nagistorymusic" },
+    { "label": "X", "url": "https://x.com/Nagi_storymusic" },
+    { "label": "note", "url": "https://note.com/nagi_storymusic" }
+  ],
   "mascot": {
     "name": "B.A.I.R.T（ベイート）",
-    "images": ["materials/mascot/bairt-front.png", "materials/mascot/bairt-side.png", "materials/mascot/bairt-back.png"]
-  },
-  "links": {
-    "youtube": "https://www.youtube.com/@Nagi-Story-Music",
-    "tiktok": "https://www.tiktok.com/@nagistorymusic",
-    "note": "https://note.com/nagi_storymusic",
-    "x": "https://x.com/Nagi_storymusic"
+    "images": ["assets/mascot/bairt-front.png", "assets/mascot/bairt-side.png", "assets/mascot/bairt-back.png"]
   },
   "contact": {
-    "type": "form",
     "service": "Web3Forms",
     "accessKey": "63e37a2a-b743-4140-91e3-05309424adce",
     "fields": ["お名前", "メールアドレス", "依頼の種類（MV制作／作曲／その他）", "内容"]

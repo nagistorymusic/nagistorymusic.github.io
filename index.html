@@ -245,7 +245,19 @@
 
 <script src="assets/js/site.js"></script>
 <script>
-  const { works, links, profile } = NSM;
+(async () => {
+  // 表示する内容は content/*.json から読む（ここを書き換えればサイトに反映される）
+  const load = (p) => fetch(p, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${p}: ${r.status}`))));
+  const esc = (s = '') => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  let { works, links, profile } = NSM;
+  try {
+    const [w, p, s] = await Promise.all([load('content/works.json'), load('content/profile.json'), load('content/site.json')]);
+    works = w.map((x) => ({ ...x, id: x.youtube }));
+    profile = p;
+    links = s.links.map((l) => [l.label, l.url]);
+  } catch (e) {
+    console.warn('content/*.json を読めなかったので、組み込みのデータで表示します', e);
+  }
   // スマホは 720p、PC は 1080p、大きい画面・高精細な画面は 1440p
   const phone = innerWidth < 760 || matchMedia('(pointer: coarse)').matches;
   const px = innerWidth * (devicePixelRatio || 1);
@@ -256,20 +268,20 @@
     <article class="film">
       <img class="wm" src="assets/logo/nsm-mark-640.webp" alt="" loading="lazy">
       <div class="screen" data-avoid data-id="${w.id}" data-blur data-reveal>
-        <img src="${NSM.localThumb(w.id).src}" srcset="${NSM.localThumb(w.id).srcset}" sizes="(max-width: 760px) 92vw, 62vw" alt="${w.title}" loading="lazy" decoding="async">
+        <img src="${NSM.localThumb(w.id).src}" srcset="${NSM.localThumb(w.id).srcset}" sizes="(max-width: 760px) 92vw, 62vw" alt="${esc(w.title)}" loading="lazy" decoding="async">
         <span class="play">Play</span>
       </div>
       <div class="info" data-blur data-reveal>
         <div class="no">${String(i + 1).padStart(2, '0')}</div>
-        <h3 class="${/[^\x00-\x7F]/.test(w.title) ? 'jp' : ''}">${w.title}</h3>
-        <p class="line" data-split>${w.line}</p>
-        <p class="meta"><small>${w.kind || 'Official MV'}</small><a class="yt" href="https://www.youtube.com/watch?v=${w.id}" target="_blank" rel="noopener" aria-label="${w.title} を YouTube で見る（新しいタブ）">Watch on YouTube ↗</a></p>
+        <h3 class="${/[^\x00-\x7F]/.test(w.title) ? 'jp' : ''}">${esc(w.title)}</h3>
+        <p class="line" data-split>${esc(w.line)}</p>
+        <p class="meta"><small>${esc(w.kind || 'Official MV')}</small><a class="yt" href="https://www.youtube.com/watch?v=${esc(w.id)}" target="_blank" rel="noopener" aria-label="${esc(w.title)} を YouTube で見る（新しいタブ）">Watch on YouTube ↗</a></p>
       </div>
     </article>`).join('');
   document.querySelectorAll('.screen').forEach((s) => NSM.facade(s, s.dataset.id));
   document.getElementById('pja').textContent = profile.ja;
   document.getElementById('pen').textContent = profile.en;
-  document.getElementById('roll').innerHTML = links.map(([n, u]) => `<li><span>${n}</span><i></i><a href="${u}" target="_blank" rel="noopener">${u.replace(/^https:\/\/(www\.)?/, '')}</a></li>`).join('');
+  document.getElementById('roll').innerHTML = links.map(([n, u]) => `<li><span>${esc(n)}</span><i></i><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https:\/\/(www\.)?/, ''))}</a></li>`).join('');
   document.querySelectorAll('[data-split]').forEach(NSM.split);
   // 透かしマークのパララックス
   const marks = [...document.querySelectorAll('.film .wm')];
@@ -352,6 +364,7 @@
   if (seen || NSM.reduced) { intro.remove(); NSM.reveal(); }
   else { playIntro().then(() => NSM.reveal()); }
   NSM.mascot({ src: 'assets/mascot/bairt-front.png', mode: 'follow', size: 42, tapToTop: true });
+})();
 </script>
 </body>
 </html>

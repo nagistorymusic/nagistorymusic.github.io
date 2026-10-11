@@ -1,2 +1,9 @@
 # 元素材（大容量のため Git には入れない。Web用に書き出したものだけをコミットする）
 materials/
+
+# パソコンごとの設定（素材フォルダの場所など）
+tools/local.json
+
+# Python の一時ファイル
+__pycache__/
+.DS_Store
