@@ -93,6 +93,11 @@
   .info h3 { font-family: var(--en); font-style: italic; font-weight: 500; font-size: clamp(26px, 2.8vw, 38px); line-height: 1.15; margin: 10px 0 8px; letter-spacing: .01em; }
   .info h3.jp { font-family: var(--mincho); font-style: normal; font-weight: 700; letter-spacing: .12em; }
   .info small { font-size: 10px; letter-spacing: .32em; color: var(--dim); text-transform: uppercase; }
+  .info .meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
+  .film:nth-child(even) .info .meta { justify-content: flex-end; }
+  .info .yt { font-family: var(--en); font-style: italic; font-size: 16px; letter-spacing: .04em; color: var(--paper);
+              border-bottom: 1px solid rgba(217,83,59,.6); padding-bottom: 1px; transition: color .3s, border-color .3s; }
+  .info .yt:hover { color: var(--red); border-bottom-color: var(--red); }
   /* 透かしの NSM マーク（作品情報の側の余白に。スクロールで少し遅れて動く＝10 パララックス） */
   .film { isolation: isolate; }
   .film .screen, .film .info { grid-row: 1; }
@@ -258,7 +263,7 @@
         <div class="no">${String(i + 1).padStart(2, '0')}</div>
         <h3 class="${/[^\x00-\x7F]/.test(w.title) ? 'jp' : ''}">${w.title}</h3>
         <p class="line" data-split>${w.line}</p>
-        <small>Official MV</small>
+        <p class="meta"><small>${w.kind || 'Official MV'}</small><a class="yt" href="https://www.youtube.com/watch?v=${w.id}" target="_blank" rel="noopener" aria-label="${w.title} を YouTube で見る（新しいタブ）">Watch on YouTube ↗</a></p>
       </div>
     </article>`).join('');
   document.querySelectorAll('.screen').forEach((s) => NSM.facade(s, s.dataset.id));

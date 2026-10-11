@@ -1,7 +1,7 @@
 // 3案で共通の仕組み：作品データ／クリックで再生／文字アニメーション／ベイート
 window.NSM = (() => {
   const works = [
-    { title: 'Halloween Night', id: '13-gX6KvSuo', line: '何が起きても不思議じゃない——\nそんな、一夜限りの物語。' },
+    { title: 'Halloween Night', id: '13-gX6KvSuo', kind: 'AI Film', line: '何が起きても不思議じゃない——\nそんな、一夜限りの物語。' },
     { title: 'Black Vinyl', id: 'Plytn7F-Xco', line: '歌詞をなぞると、扉が開く。' },
     { title: 'Twist the World', id: 'Hlx6cZSQH5w', line: '世界を書き換える魔術師。\nその力を得た時、\nあなたはどうしますか？' },
     { title: '札あつめ', id: 'g14MSpKOfrk', line: '海の彼方、妖どもが集う島' },
